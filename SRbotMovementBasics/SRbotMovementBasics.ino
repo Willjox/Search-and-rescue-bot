@@ -1,5 +1,4 @@
 // Motorshield pins
-
 #define LEFT 111
 #define RIGHT 222
 #define FORWARD 120
@@ -19,6 +18,12 @@ void setup() {
 void servoOutput(int leftSpeed, int rightSpeed) {
   leftServo.write(leftSpeed);
   rightServo.write(rightSpeed);
+}
+
+void adjustSpeed(int left int right) {
+  left = left + leftServo.read();
+  right = rigt + rightServo.read();
+  servoOutput(left,right);
 }
 
 void rotate(int direction) {
