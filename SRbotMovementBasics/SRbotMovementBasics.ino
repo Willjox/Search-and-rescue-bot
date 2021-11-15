@@ -21,8 +21,8 @@ void servoOutput(int leftSpeed, int rightSpeed) {
 }
 
 void adjustSpeed(int left int right) {
-  left = left + leftServo.read();
-  right = rigt + rightServo.read();
+  left = constrain(left + leftServo.read() , 5 , 175);
+  right = constrain(right + rightServo.read() , 5 , 175);
   servoOutput(left,right);
 }
 
