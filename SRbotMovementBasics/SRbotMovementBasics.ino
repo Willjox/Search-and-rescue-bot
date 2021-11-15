@@ -41,7 +41,7 @@ void straight(int direction) {
     Serial.println("Reversing");
     servoOutput(REVERSE,REVERSE);
   }  else {
-    Serial.println("ERROR going straight")
+    Serial.println("ERROR going straight");
   }
 }
 
@@ -51,8 +51,10 @@ void loop() {
   straight(FORWARD);
   delay(2000);
   straight(REVERSE);
+  delay(2000);
   Serial.println("starting Rotate");
   rotate(LEFT);
   delay(3000);
-  rotate(RIGHT)
+  rotate(RIGHT);
+  delay(3000);
 }
