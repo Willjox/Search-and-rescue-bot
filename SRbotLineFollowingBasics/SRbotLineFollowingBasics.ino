@@ -11,7 +11,8 @@
 QTRSensors lineFollower;
 QTRSensors turnDetectors;
 
-const uint8_t linePins[3] = {A0, A2 , A1};
+const uint8_t linePins[3] = {2, 3 , 4};
+const uint8_t startButton = 13;
 //int turnPins[] = {leftTurnSensor, rightTurnSensor};
 uint16_t lineValues[3];
 //int turnStates[];
@@ -36,26 +37,33 @@ void detectTurns() {
 void setup() {
   Serial.begin(9600);
   Serial.println("starting setup");
-  lineFollower.setTypeAnalog();
+  lineFollower.setTypeRC();
   lineFollower.setSensorPins(linePins,3);
   Serial.println("Sensors initiated, Calibrating");
   digitalWrite(LED_BUILTIN, HIGH);
+  Serial.print("Iteration: ");
   for (uint8_t i = 0; i < 250; i++) {
     lineFollower.calibrate();
-    if (i%10 == 1) {
-      Serial.print("Iteration: ");
-      Serial.println(i);
+    if (i%25 == 0) {
+      Serial.print(" ");
+      Serial.print(i);
     }
     delay(20);
   }
   digitalWrite(LED_BUILTIN, LOW);
-  
-  Serial.println("Calibration Done. Starting loop");
+  Serial.println("");
+  Serial.println("Calibration Done. waiting for start button");
+  pinMode(startbutton,INPUT);
+  Serial.println("waiting for start button");
+  while {digitalRead(startButton == LOW) {
+    delay(100);
+  }
+  Serial.println("Starting");
 
 }
 
 void loop() {
- lineFollower.read(lineValues);
+ lineFollower.readCalibrated(lineValues);
  Serial.println(lineValues[0]);
  Serial.println(lineValues[1]);
  Serial.println(lineValues[2]);

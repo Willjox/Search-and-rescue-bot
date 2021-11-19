@@ -1,3 +1,4 @@
+#include <Servo.h>
 // Motorshield pins
 #define LEFT 111
 #define RIGHT 222
@@ -5,22 +6,28 @@
 #define REVERSE 60
 Servo leftServo;
 Servo rightServo;
+const int startButton = 13;
 
 
 void setup() {
  Serial.begin(9600);
  Serial.println("starting setup");
- leftServo.attach(8);
- rightServo.attach(7);
- Serial.println("Finished setup");
+ leftServo.attach(7);
+ rightServo.attach(8);
+ pinMode(startButton, INPUT);
+ Serial.println("Finished setup, waiting for start");
+ //while(digitalRead(startButton) == LOW) {
+   //delay(10);
+ //}
+ Serial.println("start detected, continuing");
 }
 
 void servoOutput(int leftSpeed, int rightSpeed) {
-  leftServo.write(leftSpeed);
+  leftServo.write(180-leftSpeed);
   rightServo.write(rightSpeed);
 }
 
-void adjustSpeed(int left int right) {
+void adjustSpeed(int left, int right) {
   left = constrain(left + leftServo.read() , 5 , 175);
   right = constrain(right + rightServo.read() , 5 , 175);
   servoOutput(left,right);
