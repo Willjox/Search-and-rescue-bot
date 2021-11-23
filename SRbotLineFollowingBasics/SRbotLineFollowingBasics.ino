@@ -10,7 +10,12 @@
 
 QTRSensors lineFollower;
 QTRSensors turnDetectors;
+int M1;
+int M2;
 
+int lastError = 0;
+const float kp = 0.1;
+const float kd = 5;
 const uint8_t linePins[3] = {2, 3 , 4};
 const uint8_t startButton = 13;
 //int turnPins[] = {leftTurnSensor, rightTurnSensor};
@@ -34,12 +39,7 @@ void detectTurns() {
 
 }
 
-void setup() {
-  Serial.begin(9600);
-  Serial.println("starting setup");
-  lineFollower.setTypeRC();
-  lineFollower.setSensorPins(linePins,3);
-  Serial.println("Sensors initiated, Calibrating");
+void calibrate() {
   digitalWrite(LED_BUILTIN, HIGH);
   Serial.print("Iteration: ");
   for (uint8_t i = 0; i < 250; i++) {
@@ -50,28 +50,54 @@ void setup() {
     }
     delay(20);
   }
-  digitalWrite(LED_BUILTIN, LOW);
   Serial.println("");
-  Serial.println("Calibration Done. waiting for start button");
-  pinMode(startbutton,INPUT);
-  Serial.println("waiting for start button");
-  while {digitalRead(startButton == LOW) {
-    delay(100);
-  }
-  Serial.println("Starting");
+  Serial.print("Max: ");
+  //Serial.println(lineFollower.calibratedMaximumOn);
+  Serial.print("Min: ");
+  //Serial.println(lineFollower.calibratedMinimumOn);
+  digitalWrite(LED_BUILTIN, LOW);
 
 }
 
+void setup() {
+  pinMode(startButton,INPUT);
+  Serial.begin(9600);
+  Serial.println("starting setup");
+  lineFollower.setTypeRC();
+  lineFollower.setSensorPins(linePins,3);
+  Serial.println("Sensors initiated.");
+  delay(1000);
+  if (digitalRead(startButton) == HIGH) {
+    Serial.println("Initiating calibration");
+    calibrate();
+    Serial.println("calibration done");
+  } else {
+    Serial.println("Skipped calibration");
+  }
+  Serial.println("Calibration Done. waiting for start button");
+  Serial.println("waiting for start button");
+  while (digitalRead(startButton) == LOW) {
+    delay(100);
+  }
+  while (digitalRead(startButton) == HIGH) {
+    delay(100);
+  }
+  Serial.println("Starting");
+  M1 = 100;
+  M2 = 100;
+}
+
 void loop() {
- lineFollower.readCalibrated(lineValues);
- Serial.println(lineValues[0]);
- Serial.println(lineValues[1]);
- Serial.println(lineValues[2]);
- for (int i = 0; i < 3; i++) {
-   states[i] = (lineValues[i] > 500);
- }
- digitalWrite(ledLeft,states[0]);
- digitalWrite(ledMiddle,states[1]);
- digitalWrite(ledRight,states[2]);
- delay(30);
+
+  int position = lineFollower.readLineBlack(lineValues);
+  int error = position - 1000;
+  int motorSpeed = kp * error + kd * (error - lastError);
+  lastError = error;
+  int m1Speed = M1 + motorSpeed;
+  int m2Speed = M2 - motorSpeed;
+  Serial.print("Left: ");
+  Serial.print(m1Speed);
+  Serial.print(" Right: ");
+  Serial.println(m2Speed);
+  delay(4000);
 }
