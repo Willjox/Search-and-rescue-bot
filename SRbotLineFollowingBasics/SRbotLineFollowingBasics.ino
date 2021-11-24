@@ -1,42 +1,37 @@
 #include <QTRSensors.h>
+#include <Servo.h>
 #define leftLineSensor  A0
 #define rightLineSensor A1
 #define middleLineSensor A2
 #define leftTurnSensor
 #define rightTurnSensor
-#define ledLeft 10
-#define ledMiddle 9
-#define ledRight 8
+
 
 QTRSensors lineFollower;
 QTRSensors turnDetectors;
+Servo leftServo;
+Servo rightServo;
+
 int M1;
 int M2;
 
 int lastError = 0;
-const float kp = 0.1;
-const float kd = 5;
-const uint8_t linePins[3] = {2, 3 , 4};
+const float kp = 0.01;
+const float kd = 0.02;
+const uint8_t linePins[3] = {4, 3 , 2};
 const uint8_t startButton = 13;
 //int turnPins[] = {leftTurnSensor, rightTurnSensor};
 uint16_t lineValues[3];
-//int turnStates[];
-bool states[3];
 
-void getState() {
-
+void servoOutput(int leftSpeed, int rightSpeed) {
+  leftServo.write(180-leftSpeed);
+  rightServo.write(rightSpeed);
 }
 
-void controlAlgorithm () {
-
-}
-
-void followLine() {
-
-}
-
-void detectTurns() {
-
+void adjustSpeed(int left, int right) {
+  left = constrain(left + leftServo.read() , 5 , 175);
+  right = constrain(right + rightServo.read() , 5 , 175);
+  servoOutput(left,right);
 }
 
 void calibrate() {
@@ -63,11 +58,16 @@ void setup() {
   pinMode(startButton,INPUT);
   Serial.begin(9600);
   Serial.println("starting setup");
+  leftServo.attach(9);
+  rightServo.attach(10);
+  servoOutput(90,90);
+  
+
   lineFollower.setTypeRC();
   lineFollower.setSensorPins(linePins,3);
   Serial.println("Sensors initiated.");
   delay(1000);
-  if (digitalRead(startButton) == HIGH) {
+  if (digitalRead(startButton) == LOW) {
     Serial.println("Initiating calibration");
     calibrate();
     Serial.println("calibration done");
@@ -83,8 +83,8 @@ void setup() {
     delay(100);
   }
   Serial.println("Starting");
-  M1 = 100;
-  M2 = 100;
+  M1 = 110;
+  M2 = 110;
 }
 
 void loop() {
@@ -93,11 +93,14 @@ void loop() {
   int error = position - 1000;
   int motorSpeed = kp * error + kd * (error - lastError);
   lastError = error;
-  int m1Speed = M1 + motorSpeed;
-  int m2Speed = M2 - motorSpeed;
+  int m2Speed = M1 + motorSpeed;
+  int m1Speed = M2 - motorSpeed;
   Serial.print("Left: ");
   Serial.print(m1Speed);
   Serial.print(" Right: ");
-  Serial.println(m2Speed);
-  delay(4000);
+  Serial.print(m2Speed);
+  Serial.print(" Error: ");
+  Serial.println(error);
+  servoOutput(m2Speed,m1Speed);
+  delay(100);
 }
