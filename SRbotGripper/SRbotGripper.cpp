@@ -4,33 +4,35 @@
 
 
 
-Gripper::Gripper(int gripperPin, int rotatePin) {
+SRbotGripper::SRbotGripper(int gripperPin, int rotatePin) {
   _rotateServo.attach(rotatePin);
   _gripperServo.attach(gripperPin);
+  _rotateServo.write(180);
+  _gripperServo.write(90);
 }
-Gripper::moveServo(int degrees, int delay, Servo servo) {
-  pos = servo.read();
-  if (pos > 0) {
-    for (int i = pos; i < pos + degrees; i += 1 ) {
+void SRbotGripper::moveServo(int degrees, int waitTime, Servo servo) {
+  _pos = servo.read();
+  if (_pos > 0) {
+    for (int i = _pos; i < _pos + degrees; i += 1 ) {
       servo.write(i);
       delay(delay);
     }
-  } else if ( pos < 0) {
-    for (int i = pos; i > pos + degrees; i -= 1 ) {
+  } else if ( _pos < 0) {
+    for (int i = _pos; i > _pos + degrees; i -= 1 ) {
       servo.write(i);
-      delay(delay);
+      delay(waitTime);
     }
   }
 }
-Gripper::grip() {
+void SRbotGripper::grip() {
   //if closed open
   if (_gripperServo.read() == 5) {
-    moveServo(170,5,_gripperServo);
+    moveServo(85,5,_gripperServo);
   } else {
     // if not closed the gripper is open and should be closed
-    moveServo(-170,5,_gripperServo);
+    moveServo(-85,5,_gripperServo);
   }
 }
-Gripper::rotate(int degrees) {
-  moveServo(degrees,5,_rotateServo);
+void SRbotGripper::rotate(int degrees) {
+  moveServo(degrees,3,_rotateServo);
 }

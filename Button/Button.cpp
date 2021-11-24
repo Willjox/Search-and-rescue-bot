@@ -4,7 +4,8 @@ Button::Button(int pin) {
   _pin = pin;
   pinMode(_pin,INPUT);
 }
-Button::waitFor(boolean condition) {
+void Button::waitFor(boolean condition, char *string) {
+  Serial.println(string);
   while (digitalRead(_pin) != condition) {
     delay(50);
   }

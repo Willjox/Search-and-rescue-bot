@@ -2,8 +2,8 @@
 Button class for waiting for pressing or realeasing a button
 */
 
-#ifndef SRbotGripper_h
-#define SRbotGripper_h
+#ifndef Button_h
+#define Button_h
 
 #include "Arduino.h"
 
@@ -11,9 +11,9 @@ class Button
 {
 public:
   Button(int pin);
-  void waitFor(boolean condition);
+  void waitFor(boolean condition, char *string);
 
 private:
-  _pin
-}
-#enddif
+  int _pin;
+};
+#endif

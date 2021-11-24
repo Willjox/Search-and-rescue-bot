@@ -6,17 +6,18 @@ Controls Gripping and rotating of gripping claw with one joint.
 #define SRbotGripper_h
 
 #include "Arduino.h"
-#include "servo.h"
+#include "Servo.h"
 
-class Gripper
+class SRbotGripper
 {
 public:
-  Gripper(int gripperPin, int rotatePin);
+  SRbotGripper(int gripperPin, int rotatePin);
   void rotate(int degrees);
   void grip();
 private:
-  void moveServo(int degrees)
+  void moveServo(int degrees, int waitTime, Servo servo);
   Servo _rotateServo;
   Servo _gripperServo;
-}
-#enddif
+  int _pos;
+};
+#endif
