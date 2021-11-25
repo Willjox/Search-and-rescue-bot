@@ -3,35 +3,31 @@
 
 #include "Arduino.h"
 #include "Servo.h"
-#include "QTRSensors.h"
-
-
 
 class SRbotMovment
 {
-public:
+  public:
   SRbotMovment();
-  boolean followLine();
+  void followLine();
+  void turn(int direction);
+  void rotate();
 
 
-private:
-  QTRSensors turnDetectors;
-  QTRSensors lineFollower;
-  Servo leftServo;
-  Servo rightServo;
-  const float kp = 0.01;
-  const float kd = 0,02;
-  const uint8_t linePins[3] = {4 , 3 , 3};
-  int lastError;
-  int leftBaseSpeed;
-  int rightBaseSpeed;
+  private:
+    SRbotSensors sensors;
+    Servo leftServo;
+    Servo rightServo;
 
-  void adjustSpeed(int left, int right);
-  void servoOutput(int left , int right);
-  void control();
-  void loop();
-  int detectTurn();
+    const float kp = 0.01;
+    const float kd = 0.02;
 
+    int lastError;
+    int leftBaseSpeed;
+    int rightBaseSpeed;
+
+    void adjustSpeed(int left, int right);
+    void servoOutput(int left , int right);
+    void control();
 }
 
 #endif

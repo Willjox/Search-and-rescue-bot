@@ -1,8 +1,14 @@
 #include <Button.h>
 #include <SRbotGripper.h>
+#include "SRbotMovment.h"
+
+const uint8_t servoPins[2] = {9,10};
+const uint8_t linePins[3] = {4, 3 , 2};
+const uint8_t turnPins[2] = {};
 
 Button button(13);
 SRbotGripper gripper(7,8);
+SRbotMovment movment(servoPins,linePins,turnPins);
 
 void gripAndStore() {
   button.waitFor(HIGH,"push to GRIP");
@@ -21,6 +27,14 @@ void setup() {
 }
 
 void loop() {
-  gripAndStore();
-
+  switch (movment.followLine()) {
+    case 1:
+      movment.turn(LEFT);
+    case 2:
+      movment.turn(RIGHT);
+    case 3:
+    movment.followLine();
+    case 4:
+    movment.rotate();
+  }
 }
