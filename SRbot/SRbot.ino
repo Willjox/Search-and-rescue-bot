@@ -17,7 +17,7 @@ void gripAndStore() {
 
 void setup() {
   Serial.begin(9600);
-  button.waitFor(1,"Setup done waiting for buttonpress");
+  button.waitFor(HIGH,"Setup done waiting for buttonpress");
 }
 
 void loop() {

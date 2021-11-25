@@ -61,13 +61,15 @@ void setup() {
   leftServo.attach(9);
   rightServo.attach(10);
   servoOutput(90,90);
-  
+  while(1) {
+    Serial.println("testar");
+  }
 
   lineFollower.setTypeRC();
   lineFollower.setSensorPins(linePins,3);
   Serial.println("Sensors initiated.");
   delay(1000);
-  if (digitalRead(startButton) == LOW) {
+  if (digitalRead(startButton) == HIGH) {
     Serial.println("Initiating calibration");
     calibrate();
     Serial.println("calibration done");
@@ -79,9 +81,9 @@ void setup() {
   while (digitalRead(startButton) == LOW) {
     delay(100);
   }
-  while (digitalRead(startButton) == HIGH) {
-    delay(100);
-  }
+  //while (digitalRead(startButton) == HIGH) {
+    //delay(100);
+  //}
   Serial.println("Starting");
   M1 = 110;
   M2 = 110;
