@@ -3,11 +3,12 @@
 
 #include "Arduino.h"
 #include "Servo.h"
+#include "SRbotSensors.h"
 
 class SRbotMovment
 {
   public:
-  SRbotMovment();
+  SRbotMovment(int *servoPins, int *linePins, int *turnPins);
   void followLine();
   void turn(int direction);
   void rotate();
@@ -28,6 +29,6 @@ class SRbotMovment
     void adjustSpeed(int left, int right);
     void servoOutput(int left , int right);
     void control();
-}
+};
 
 #endif

@@ -2,7 +2,7 @@
 #include "QTRSensors.h"
 #include "SRbotSensors.h"
 
-SRbotSensors::SRbotSensors(int *linePins int *turnPins) {
+SRbotSensors::SRbotSensors(int *linePins , int *turnPins) {
       this.linePins = lineSensors;
       this.turnPins = turnPins;
       lineFollower.setTypeRC();
@@ -12,7 +12,7 @@ SRbotSensors::SRbotSensors(int *linePins int *turnPins) {
       //calibrate();
 }
 
-int SRbotSensors:: getLinePos() {
+int SRbotSensors::getLinePos() {
   return lineFollower.readLineBlack(lineValues);
 }
 

@@ -6,7 +6,7 @@
 SRbotMovment::SRbotMovment(int *servoPins, int *linePins, int *turnPins) {
   leftServo.attach(servoPins[0]);
   rightServo.attach(servoPins[1]);
-  sensors(sensorPins);
+  sensors(linePins,turnPins);
   lastError = 0;
   leftBaseSpeed = 110;
   rightBaseSpeed = 110;
