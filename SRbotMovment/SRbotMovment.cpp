@@ -47,8 +47,6 @@ void SRbotMovment::turn(int direction) {
 }
 
 void SRbotMovment::rotate() {
-  Serial.println("i calibrate");
-  sensors->calibrate();
 }
 
 void SRbotMovment::servoOutput(int leftSpeed, int rightSpeed) {

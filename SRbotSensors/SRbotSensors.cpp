@@ -1,19 +1,17 @@
 #include "Arduino.h"
 #include "QTRSensors.h"
 #include "SRbotSensors.h"
+#include "EEPROM.h"
 
 SRbotSensors::SRbotSensors() {
-    Serial.println("I CONS");
+    Serial.println("In CONStruct for sensors");
     uint8_t linePins[3] = {4, 3 , 2};
     uint8_t turnPins[2] = { 6 , 5};
-    Serial.println(linePins[0]);
-    Serial.println(linePins[1]);
-    Serial.println(linePins[2]);
-
     lineFollower.setTypeRC();
     lineFollower.setSensorPins(linePins,3);
     turnDetectors.setTypeRC();
     turnDetectors.setSensorPins(turnPins,2);
+    loadCalibration();
 }
 
 int SRbotSensors::getLinePos() {
@@ -45,21 +43,29 @@ int SRbotSensors::isBlack(uint16_t mesurement) {
 boolean SRbotSensors::midState() {
   //TODO
 }
+void SRbotSensors::loadCalibration() {
+  address = 0;
+  lineFollower.calibrationOn.minimum = &lineFollowerMin[0];
+  lineFollower.calibrationOn.maximum = &lineFollowerMax[0];
+  turnDetectors.calibrationOn.minimum = &turnDetectorsMin[0];
+  turnDetectors.calibrationOn.maximum = &turnDetectorsMax[0];
 
-void SRbotSensors::calibrate() {
-  Serial.print("Iteration: ");
-  for (uint8_t i = 0; i < 250; i++) {
-    lineFollower.calibrate();
-    turnDetectors.calibrate();
-    if (i%25 == 0) {
+  lineFollower.calibrationOn.initialized = true;
+  load(lineFollower.calibrationOn.minimum, 3);
+  load(lineFollower.calibrationOn.maximum, 3);
+
+  turnDetectors.calibrationOn.initialized = true;
+  load(turnDetectors.calibrationOn.minimum, 2);
+  load(turnDetectors.calibrationOn.maximum, 2);
+}
+
+void loadData (uint16_t *data, int size) {
+  Serial.print("loaded: ");
+  for(int i = 0; i < size; i++) {
+      EEPROM.get(address, data[i]);
+      Serial.print(data[i]);
       Serial.print(" ");
-      Serial.print(i);
-    }
-    delay(20);
+      address += sizeof(uint16_t);
   }
   Serial.println("");
-  Serial.print("Max: ");
-  //Serial.println(lineFollower.calibratedMaximumOn);
-  Serial.print("Min: ");
-  //Serial.println(lineFollower.calibratedMinimumOn);
 }

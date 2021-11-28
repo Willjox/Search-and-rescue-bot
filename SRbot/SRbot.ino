@@ -21,7 +21,6 @@ void setup() {
   Serial.begin(9600);
   //button.waitFor(HIGH,"Setup done waiting for buttonpress");
   movement = new SRbotMovment();
-  movement->rotate();
 }
 
 void loop() {
