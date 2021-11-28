@@ -63,7 +63,7 @@ void setup() {
   servoOutput(90,90);
   while(1) {
     Serial.println("testar");
-  }
+   }
 
   lineFollower.setTypeRC();
   lineFollower.setSensorPins(linePins,3);
@@ -85,8 +85,8 @@ void setup() {
     //delay(100);
   //}
   Serial.println("Starting");
-  M1 = 110;
-  M2 = 110;
+  M1 = 95;
+  M2 = 95;
 }
 
 void loop() {

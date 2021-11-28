@@ -3,61 +3,74 @@
 #include "Servo.h"
 #include "SRbotSensors.h"
 
-SRbotMovment::SRbotMovment(int *servoPins, int *linePins, int *turnPins) {
-  leftServo.attach(servoPins[0]);
-  rightServo.attach(servoPins[1]);
-  sensors(linePins,turnPins);
+SRbotMovment::SRbotMovment() {
+  leftServo.attach(9);
+  rightServo.attach(10);
+  servoOutput(90,90);
   lastError = 0;
-  leftBaseSpeed = 110;
-  rightBaseSpeed = 110;
-  leftServo.write(90);
-  rightServo.write(90);
+  leftBaseSpeed = 130;
+  rightBaseSpeed = 130;
+
+  sensors = new SRbotSensors();
+
+
+
 }
 
-void SRbotMovment::followLine() {
-  while (detectTurn == false) {
-    control(sensors.getLinePos());
+int SRbotMovment::followLine() {
+  while (1) {
+    //control(sensors->getLinePos());
+    servoOutput(90,90);
+    delay(500);
   }
+  servoOutput(90,90);
+  delay(1500);   //FOR TESTING PURPOSES
 }
 
-void SRbotMovment::turn() {
+void SRbotMovment::turn(int direction) {
     //WHILE DETECTMIDLINE
-    // GO forward
-    //WHEN NOT DETECTING
-    //START TURNING direction
-    // UNTIL DETECTING MIDLINE
+    servoOutput(95,95);
+    while(sensors->midState() == true) {
+      delay(20);
+    }
+    servoOutput(90,90);
+    delay(1000);
+    servoOutput(95,120);
+    while(sensors->midState() != true) {
+      delay(20);
+    }
+    int timer = millis() + 1000;
+    while(millis() < timer ) {
+      servoOutput(110,110);
+     }
+
 }
 
 void SRbotMovment::rotate() {
-  // ROTATE TILL NO MIDLINE,
-  // KEEP TURNING TILL MIDLINE visible again
+  Serial.println("i calibrate");
+  sensors->calibrate();
 }
 
-void SRbotMovment::adjustSpeed(int left, int right) {
-  //nödvändig?
-  left = constrain(left + leftServo.read() , 5 , 175);
-  right = constrain(right + rightServo.read() , 5 , 175);
-  servoOutput(left,right);
-}
+void SRbotMovment::servoOutput(int leftSpeed, int rightSpeed) {
 
-void SRbotMovment::servoOutput(int left, int right) {
-  leftServo.write(180-leftSpeed);
-  rightServo.write(rightSpeed);
+  leftServo.write(90);
+  rightServo.write(90);
+  Serial.println(leftServo.read());
+  Serial.println(rightServo.read());
 }
 
 void SRbotMovment::control(int position) {
+  Serial.println("i control");
   int error = position - 1000;
   int servoSpeed = kp * error + kd * (error - lastError);
   lastError = error;
-  servoOutput(m2Speed,m1Speed);
   int leftSpeed = leftBaseSpeed + servoSpeed;
   int rightSpeed = rightBaseSpeed - servoSpeed;
-  servoOutput(leftSpeed,RightSpeed);
+  servoOutput(leftSpeed,rightSpeed);
   Serial.print("Left: ");
-  Serial.print(m1Speed);
+  Serial.print(rightSpeed);
   Serial.print(" Right: ");
-  Serial.print(m2Speed);
+  Serial.print(leftSpeed);
   Serial.print(" Error: ");
   Serial.println(error);
-
 }

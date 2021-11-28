@@ -7,20 +7,19 @@
 class SRbotSensors
 {
   public:
-    SRbotSensors(int *linePins, int *turnPins);
+    SRbotSensors();
     int getLinePos();
     int detectTurn();
     boolean midState();
+    void calibrate();
+
   private:
-    int *linePins;
-    int *turnPins;
-    uint16_t lineValues[3];
     QTRSensors lineFollower;
     QTRSensors turnDetectors;
 
-    void calibrate();
-
-
+    uint16_t lineValues[3];
+    uint16_t turnValues[2];
+    int isBlack(uint16_t mesurement);
 };
 
 #endif
