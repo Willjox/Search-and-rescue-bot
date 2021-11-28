@@ -47,19 +47,20 @@ void SRbotSensors::loadCalibration() {
   address = 0;
   lineFollower.calibrationOn.minimum = &lineFollowerMin[0];
   lineFollower.calibrationOn.maximum = &lineFollowerMax[0];
+  lineFollower.calibrationOn.initialized = true;
+
   turnDetectors.calibrationOn.minimum = &turnDetectorsMin[0];
   turnDetectors.calibrationOn.maximum = &turnDetectorsMax[0];
-
-  lineFollower.calibrationOn.initialized = true;
-  load(lineFollower.calibrationOn.minimum, 3);
-  load(lineFollower.calibrationOn.maximum, 3);
-
   turnDetectors.calibrationOn.initialized = true;
-  load(turnDetectors.calibrationOn.minimum, 2);
-  load(turnDetectors.calibrationOn.maximum, 2);
+
+  loadData(lineFollower.calibrationOn.minimum, 3);
+  loadData(lineFollower.calibrationOn.maximum, 3);
+
+  loadData(turnDetectors.calibrationOn.minimum, 2);
+  loadData(turnDetectors.calibrationOn.maximum, 2);
 }
 
-void loadData (uint16_t *data, int size) {
+void SRbotSensors::loadData (uint16_t *data, int size) {
   Serial.print("loaded: ");
   for(int i = 0; i < size; i++) {
       EEPROM.get(address, data[i]);
