@@ -1,23 +1,25 @@
-const int button = 13;
+const int startButton = 13;
+int duration;
+int echoPin;
+int trigPin;
 
 void setup() {
   Serial.begin(9600);
-  pinMode(button,INPUT);
-  Serial.println("waiting for start button"); 
-  while {digitalRead(startButton == LOW) {
-    delay(100);
-  }
   Serial.println("Starting");
+  echoPin = 11;
+  trigPin = 12;
+  pinMode(echoPin, INPUT);
+  pinMode(trigPin, OUTPUT);
 }
 
 void loop() {
-  int state = digitalRead(button);
-  if (state == HIGH) {
-    Serial.println("button is pushed in");
-  } else if (state == LOW) {
-    Serial.println("Button is not pushed"); 
-  } else {
-    Serial.println("error"); 
-  }
-  delay(50);
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(5);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin,HIGH);
+  int length = duration / 29 / 2;
+  Serial.println(length);
+  delay(2000);
 }

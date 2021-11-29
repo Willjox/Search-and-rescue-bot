@@ -12,9 +12,13 @@ class SRbotSensors
     int getLinePos();
     int detectTurn();
     boolean midState();
+    int distance();
 
   private:
     int address;
+    int duration;
+    int echoPin;
+    int trigPin;
     QTRSensors lineFollower;
     QTRSensors turnDetectors;
 
@@ -28,6 +32,7 @@ class SRbotSensors
     int isBlack(uint16_t mesurement);
     void loadCalibration();
     void loadData(uint16_t *data, int size);
+
 };
 
 #endif
