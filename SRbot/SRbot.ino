@@ -41,5 +41,6 @@ void loop() {
     }
     while (Serial.available() == 1) {
       delay(20);
+      Serial.read();
     }
 }

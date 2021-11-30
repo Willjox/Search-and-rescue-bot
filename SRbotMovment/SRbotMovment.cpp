@@ -8,8 +8,8 @@ SRbotMovment::SRbotMovment() {
   rightServo.attach(servoPins[0]);
   servoOutput(90,90);
   lastError = 0;
-  leftBaseSpeed = 110;
-  rightBaseSpeed = 110;
+  leftBaseSpeed = 123;
+  rightBaseSpeed = 120;
 
   sensors = new SRbotSensors();
 
