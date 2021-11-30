@@ -1,41 +1,39 @@
 #include <Button.h>
-#include <SRbotGripper.h>
+//#include <SRbotGripper.h>
 #include <SRbotMovment.h>
 
 Button button(13);
-SRbotGripper *gripper;
+//SRbotGripper gripper(A0,A1);
 SRbotMovment *movement;
 
-void gripAndStore() {
-  gripper->grip();
-  delay(3000);
-  gripper->rotate(-175);
-  delay(4000);
-  //gripper->grip();
-  delay(3000);
-  gripper->rotate(175);
-  delay(3000);
-}
+//void gripAndStore() {
+//  button.waitFor(HIGH,"push to GRIP");
+//  gripper.grip();
+//  button.waitFor(HIGH,"push to RAISE");
+//  gripper.rotate(-90);
+//  button.waitFor(HIGH,"push to RELEASE");
+//  gripper.grip();
+//  button.waitFor(HIGH,"push to LOWER");
+//  gripper.rotate(90);
+//}
 
 void setup() {
   Serial.begin(9600);
   pinMode(A0,OUTPUT);
   pinMode(A1,OUTPUT);
-  //button.waitFor(HIGH,"Setup done waiting for buttonpress");
+  button.waitFor(HIGH,"Setup done waiting for buttonpress");
   movement = new SRbotMovment();
-  gripper = new SRbotGripper(A0,A1);
-
+  while (Serial.available() == 0) {
+    delay(20);
+  }
 }
 
 void loop() {
   Serial.println("loop");
-  delay(3000);
-  gripAndStore();
-  delay(5000);
-  //int turn = movement->followLine();
-  //if (turn >= 4) {
-  //  movement->turn(1);
-  //  } else if (turn == 2) {
-  //    movement->turn(2);
-  //  }
+  int turn = movement->followLine();
+  if (turn >= 4) {
+    movement->turn(1);
+    } else if (turn == 2) {
+      movement->turn(2);
+    }
 }

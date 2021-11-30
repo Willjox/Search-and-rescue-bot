@@ -18,7 +18,8 @@ SRbotMovment::SRbotMovment() {
 }
 
 int SRbotMovment::followLine() {
-  while (sensors->detectTurn() == 0) {
+ int direction = 0;
+  while ( direction == 0) {
     control(sensors->getLinePos());
     if(((!sensors->midState()) && (sensors->distance() < 10)) ) {
       servoOutput(90,90);
@@ -31,8 +32,10 @@ int SRbotMovment::followLine() {
         delay(20);
       }
     }
+    direction = sensors->detectTurn();
     delay(50);
   }
+  return direction;
 }
 
   //servoOutput(90,90);
