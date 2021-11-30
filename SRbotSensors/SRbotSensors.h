@@ -13,9 +13,11 @@ class SRbotSensors
     int detectTurn();
     boolean midState();
     int distance();
+    boolean allState();
 
   private:
     int address;
+    int filterLineEnd;
     int duration;
     int echoPin;
     int trigPin;

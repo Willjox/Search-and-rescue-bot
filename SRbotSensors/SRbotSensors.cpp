@@ -11,8 +11,9 @@ SRbotSensors::SRbotSensors() {
     lineFollower.setSensorPins(linePins,3);
     turnDetectors.setTypeRC();
     turnDetectors.setSensorPins(turnPins,2);
-    int echoPin = 11;
-    int trigPin = 12;
+    echoPin = 11;
+    trigPin = 12;
+    filterLineEnd = 0;
     pinMode(echoPin,INPUT);
     pinMode(trigPin,OUTPUT);
     loadCalibration();
@@ -28,26 +29,22 @@ int SRbotSensors::detectTurn() {
 
   int result = (isBlack(turnValues[0]) * 4 )
               + (isBlack(turnValues[1]) * 2 );
-  //if result > 0
-  // measure UltraSonic
-  // if > nåttvärde
-  // result + 1
-
   return result;
 }
 
 int SRbotSensors::distance() {
   digitalWrite(trigPin, LOW);
-  delayMicroseconds(5);
+  delay(5);
   digitalWrite(trigPin, HIGH);
-  delayMicroseconds(5);
+  delay(5);
   digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin,HIGH);
-  return duration / 29 / 2;
+  int distance = duration / 29 / 2;
+  return distance;
 }
 int SRbotSensors::isBlack(uint16_t mesurement) {
   Serial.println(mesurement);
-  if(mesurement >= 500) {
+  if(mesurement >= 800) {
     return 1;
   } else {
     return 0;
@@ -62,6 +59,25 @@ boolean SRbotSensors::midState() {
     return false;
   }
 }
+
+boolean SRbotSensors::allState() {
+  lineFollower.readCalibrated(lineValues);
+  for (int i = 0; i < 3; i++) {
+    Serial.println(lineValues[i]);
+    if(lineValues[i] > 500) {
+    filterLineEnd = 0;
+    return true;
+    }
+  }
+  if (filterLineEnd > 5) {
+      filterLineEnd = 0;
+      return false;
+  }
+  filterLineEnd++;
+  return true;
+
+}
+
 void SRbotSensors::loadCalibration() {
   address = 0;
   lineFollower.calibrationOn.minimum = &lineFollowerMin[0];
