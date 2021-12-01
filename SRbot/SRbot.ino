@@ -23,10 +23,11 @@ void setup() {
   pinMode(A0,OUTPUT);
   pinMode(A1,OUTPUT);
   //button.waitFor(HIGH,"Setup done waiting for buttonpress");
-  movement = new SRbotMovment();
   while (Serial.available() == 0) {
-    delay(20);
+    delay(20);  
   }
+  Serial.read();
+  movement = new SRbotMovment();
 
 }
 
@@ -41,6 +42,9 @@ void loop() {
     }
     while (Serial.available() == 1) {
       delay(20);
-      Serial.read();
+      if ( Serial.available() > 1) {
+      	Serial.read();
+	Serial.read();
+      }
     }
 }
