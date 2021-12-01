@@ -12,6 +12,8 @@ class SRbotMovment
   int followLine();
   void turn(int direction);
   void rotate();
+  void stop();
+  void start();
 
 
   private:
@@ -22,6 +24,7 @@ class SRbotMovment
     SRbotSensors *sensors;
     Servo leftServo;
     Servo rightServo;
+    boolean stopped;
 
     int lastError;
     int leftBaseSpeed;

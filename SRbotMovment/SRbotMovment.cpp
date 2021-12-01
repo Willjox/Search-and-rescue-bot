@@ -4,12 +4,12 @@
 #include "SRbotSensors.h"
 
 SRbotMovment::SRbotMovment() {
-  leftServo.attach(servoPins[1]);
-  rightServo.attach(servoPins[0]);
+  start();
+  stopped = false;
   servoOutput(90,90);
   lastError = 0;
-  leftBaseSpeed = 123;
-  rightBaseSpeed = 120;
+  leftBaseSpeed = 110;
+  rightBaseSpeed = 110;
 
   sensors = new SRbotSensors();
 
@@ -20,14 +20,18 @@ SRbotMovment::SRbotMovment() {
 int SRbotMovment::followLine() {
  int direction = 0;
  while ( direction == 0) {
+    if(stopped) {
+      Serial.println("stopped");
+    }
     control(sensors->getLinePos());
-    boolean deadEnd = ((!sensors->midState()) && (sensors->distance() < 15));
-    boolean lineEnd = sensors->allState();
-    if(deadEnd || !lineEnd ) {
+  //  boolean deadEnd = ((!sensors->midState()) && (sensors->distance() < 15));
+  //  boolean lineEnd = sensors->allState();
+  //deadEnd || !lineEnd
+    if(0 ) {
       servoOutput(90,90);
       Serial.println("End of rine: ");
       rotate();
-      while(sensors->midState() == false) {
+      while(sensors->midState() == false && !stopped) {
         delay(20);
       }
     }
@@ -65,8 +69,19 @@ void SRbotMovment::turn(int direction) {
      //delay(2000);
 }
 
+void SRbotMovment::stop() {
+  servoOutput(90,90);
+  leftServo.detach();
+  rightServo.detach();
+}
+
+void SRbotMovment::start() {
+  leftServo.attach(servoPins[1]);
+  rightServo.attach(servoPins[0]);
+}
+
 void SRbotMovment::rotate() {
-  servoOutput(60,120);
+  servoOutput(65,115);
 }
 
 void SRbotMovment::servoOutput(int leftSpeed, int rightSpeed) {
