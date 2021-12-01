@@ -24,6 +24,7 @@ class SRbotMovment
     SRbotSensors *sensors;
     Servo leftServo;
     Servo rightServo;
+
     boolean stopped;
 
     int lastError;
@@ -33,6 +34,7 @@ class SRbotMovment
     void adjustSpeed(int left, int right);
     void servoOutput(int left , int right);
     void control(int position);
+    void endOfLine();
 };
 
 #endif

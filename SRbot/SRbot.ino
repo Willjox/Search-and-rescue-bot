@@ -4,10 +4,9 @@
 #include <SRbotMovment.h>
 //Button button(13);
 SRbotGripper *gripper;
-volatile boolean stopped;
 volatile SRbotMovment *movement;
-
 int interruptPin;
+
 void gripAndStore() {
   gripper->grip();
   delay(1000);
@@ -24,35 +23,30 @@ void switchTrig () {
 void setup() {
   Serial.begin(9600);
   stopped = false;
-  pinMode(A0,OUTPUT);
-  pinMode(A1,OUTPUT);
   gripper = new SRbotGripper(A0,A1);
-  pinMode(13,OUTPUT);
   interruptPin = 2;
-  digitalWrite(13,HIGH);
-
   pinMode(interruptPin, INPUT_PULLUP);
-  //attachInterrupt(digitalPinToInterrupt(interruptPin),switchTrig, FALLING);
-  //button.waitFor(HIGH,"Setup done waiting for buttonpress");
+  attachInterrupt(digitalPinToInterrupt(interruptPin),switchTrig, FALLING);
+
   while (Serial.available() == 1) {
     delay(20);
   }
   Serial.read();
   movement = new SRbotMovment();
-
 }
-
-
 
 void loop() {
   Serial.println("loop");
   int turn = movement->followLine();
   Serial.println(turn);
-  if (turn >= 4) {
-    movement->turn(1);
-    } else if (turn == 2) {
-      movement->turn(2);
-    }
+  if(turn = 10) {
+      gripAndStore();
+      movement->start();
+    } else if (turn >= 4) {
+        movement->turn(1);
+      } else if (turn == 2) {
+          movement->turn(2);
+      }
 //    while (Serial.available() == 1) {
 //      delay(20);
 //      if ( Serial.available() > 1) {

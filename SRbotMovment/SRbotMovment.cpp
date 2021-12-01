@@ -21,19 +21,13 @@ int SRbotMovment::followLine() {
  int direction = 0;
  while ( direction == 0) {
     if(stopped) {
-      Serial.println("stopped");
+      return 10;
     }
     control(sensors->getLinePos());
-  //  boolean deadEnd = ((!sensors->midState()) && (sensors->distance() < 15));
-  //  boolean lineEnd = sensors->allState();
-  //deadEnd || !lineEnd
-    if(0 ) {
-      servoOutput(90,90);
-      Serial.println("End of rine: ");
-      rotate();
-      while(sensors->midState() == false && !stopped) {
-        delay(20);
-      }
+    boolean deadEnd = ((!sensors->midState()) && (sensors->distance() < 15));
+    boolean lineEnd = sensors->allState();
+    if(deadEnd || !lineEnd) {
+
     }
     direction = sensors->detectTurn();
     delay(50);
@@ -41,32 +35,37 @@ int SRbotMovment::followLine() {
   return direction;
 }
 
+void SRbotMovment::endOfLine() {
+  servoOutput(90,90);
+  Serial.println("End of rine: ");
+  rotate();
+  while(sensors->midState() == false && !stopped) {
+    delay(20);
+  }
+}
+
 void SRbotMovment::turn(int direction) {
     if (direction == 1) {
         servoOutput(90,90);
-      //  delay(1000);
         servoOutput(120,120);
         delay(500);
         servoOutput(120,75);
         delay(500);
-        while(sensors->midState() != true) {
+        while(sensors->midState() != true && !stopped) {
         delay(20);
         }
       } else if (direction == 2) {
           servoOutput(90,90);
-          //delay(1000);
           servoOutput(120,120);
           delay(500);
           servoOutput(75,120);
           delay(500);
-          while(sensors->midState() != true) {
+          while(sensors->midState() != true && !stopped) {
             delay(20);
         }
     }
-    //WHILE DETECTMIDLINE
      servoOutput(90,90);
      Serial.println("Turn done");
-     //delay(2000);
 }
 
 void SRbotMovment::stop() {
@@ -85,11 +84,8 @@ void SRbotMovment::rotate() {
 }
 
 void SRbotMovment::servoOutput(int leftSpeed, int rightSpeed) {
-
   leftServo.write(leftSpeed);
   rightServo.write(180-rightSpeed);
-  //Serial.println(leftServo.read());
-  //Serial.println(rightServo.read());
 }
 
 void SRbotMovment::control(int position) {
