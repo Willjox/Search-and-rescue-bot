@@ -72,11 +72,13 @@ void SRbotMovment::stop() {
   servoOutput(90,90);
   leftServo.detach();
   rightServo.detach();
+  stopped = true;
 }
 
 void SRbotMovment::start() {
   leftServo.attach(servoPins[1]);
   rightServo.attach(servoPins[0]);
+  stopped = false;
 }
 
 void SRbotMovment::rotate() {
