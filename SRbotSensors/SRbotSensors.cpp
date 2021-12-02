@@ -63,7 +63,7 @@ boolean SRbotSensors::midState() {
 boolean SRbotSensors::allState() {
   lineFollower.readCalibrated(lineValues);
   for (int i = 0; i < 3; i++) {
-    Serial.println(lineValues[i]);
+    //Serial.println(lineValues[i]);
     if(lineValues[i] > 500) {
     filterLineEnd = 0;
     return true;

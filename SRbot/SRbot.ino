@@ -22,16 +22,15 @@ void switchTrig () {
 }
 void setup() {
   Serial.begin(9600);
-  stopped = false;
-  gripper = new SRbotGripper(A0,A1);
-  interruptPin = 2;
+   interruptPin = 2;
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin),switchTrig, FALLING);
-
+  Serial.println("waiting for serial....");
   while (Serial.available() == 0) {
     delay(20);
   }
   Serial.read();
+  gripper = new SRbotGripper(A0,A1);
   movement = new SRbotMovment();
 }
 

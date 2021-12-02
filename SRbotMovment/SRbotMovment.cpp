@@ -51,7 +51,7 @@ void SRbotMovment::turn(int direction) {
         delay(500);
         servoOutput(120,75);
         delay(500);
-        while(sensors->midState() != true && !stopped) {
+        while(sensors->midState() != true) {
         delay(20);
         }
       } else if (direction == 2) {
