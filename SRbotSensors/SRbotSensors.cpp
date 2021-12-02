@@ -26,7 +26,8 @@ int SRbotSensors::getLinePos() {
 int SRbotSensors::detectTurn() {
   Serial.println("i detectTurn");
   turnDetectors.readCalibrated(turnValues);
-
+  Serial.println(turnValues[0]);
+  Serial.println(turnValues[1]);
   int result = (isBlack(turnValues[0]) * 4 )
               + (isBlack(turnValues[1]) * 2 );
   return result;
@@ -43,7 +44,6 @@ int SRbotSensors::distance() {
   return distance;
 }
 int SRbotSensors::isBlack(uint16_t mesurement) {
-  Serial.println(mesurement);
   if(mesurement >= 800) {
     return 1;
   } else {

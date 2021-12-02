@@ -46,11 +46,12 @@ void loop() {
       } else if (turn == 2) {
           movement->turn(2);
       }
-    while (Serial.available() >= 1) {
-      delay(20);
-      if ( Serial.available() >= 2) {
-      	Serial.read();
-	      Serial.read();
-      }
-    }
+      
+//    while (Serial.available() >= 1) {
+//      delay(20);
+//      if ( Serial.available() >= 2) {
+//      	Serial.read();
+//	      Serial.read();
+//      }
+//    }
 }
