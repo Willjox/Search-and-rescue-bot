@@ -30,7 +30,7 @@ int SRbotMovment::followLine() {
 
     }
     direction = sensors->detectTurn();
-    delay(50);
+    delay(20);
   }
   return direction;
 }
@@ -39,7 +39,7 @@ void SRbotMovment::endOfLine() {
   servoOutput(90,90);
   Serial.println("End of rine: ");
   rotate();
-  while(sensors->midState() == false && !stopped) {
+  while(sensors->midState() == false) {
     delay(20);
   }
 }
@@ -51,8 +51,9 @@ void SRbotMovment::turn(int direction) {
         delay(500);
         servoOutput(120,75);
         delay(500);
-        while(sensors->midState() != true && !stopped) {
+        while(sensors->midState() != true) {
         delay(20);
+        Serial.println("turn loop");
         }
       } else if (direction == 2) {
           servoOutput(90,90);
@@ -60,8 +61,9 @@ void SRbotMovment::turn(int direction) {
           delay(500);
           servoOutput(75,120);
           delay(500);
-          while(sensors->midState() != true && !stopped) {
+          while(sensors->midState() != true) {
             delay(20);
+            "turn loop"
         }
     }
      servoOutput(90,90);
