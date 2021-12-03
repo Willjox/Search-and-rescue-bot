@@ -50,12 +50,13 @@ void loop() {
       } else if (turn == 1) {
         //Go straight
       }
-
-//    while (Serial.available() >= 1) {
-//      delay(20);
-//      if ( Serial.available() >= 2) {
-//      	Serial.read();
-//	      Serial.read();
-//      }
-//    }
+      if (Serial.available() >= 1) {
+    	while (Serial.available() >= 1) {
+      		delay(20);
+      		if ( Serial.available() >= 2) {
+      			Serial.read();
+	      		Serial.read();
+    	  }
+    	}
+    }
 }
