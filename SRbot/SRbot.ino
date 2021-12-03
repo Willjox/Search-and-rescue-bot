@@ -15,6 +15,7 @@ void gripAndStore() {
   gripper->grip();
   delay(2000);
   gripper->rotate(160);
+  delay(1000);
 }
 void switchTrig () {
     movement->stop();
