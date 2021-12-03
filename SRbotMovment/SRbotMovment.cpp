@@ -8,8 +8,8 @@ SRbotMovment::SRbotMovment() {
   stopped = false;
   servoOutput(90,90);
   lastError = 0;
-  leftBaseSpeed = 110;
-  rightBaseSpeed = 110;
+  leftBaseSpeed = 140;
+  rightBaseSpeed = 135;
 
   sensors = new SRbotSensors();
 
