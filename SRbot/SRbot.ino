@@ -37,26 +37,28 @@ void setup() {
 
 void loop() {
   Serial.println("loop");
-  int turn = movement->followLine();
-  Serial.println(turn);
-  if(turn == 10) {
-      gripAndStore();
-      turn = 0;
-      movement->start();
-    } else if (turn >= 4) {
-        movement->turn(1);
-      } else if (turn == 2 || turn == 3) {
-          movement->turn(2);
-      } else if (turn == 1) {
-        //Go straight
-      }
-      if (Serial.available() >= 1) {
-    	while (Serial.available() >= 1) {
-      		delay(20);
-      		if ( Serial.available() >= 2) {
-      			Serial.read();
-	      		Serial.read();
-    	  }
-    	}
-    }
+//  int turn = movement->followLine();
+ // Serial.println(turn);
+  movement->freeTurn();
+  delay(5000);
+  
+//  if(turn == 10) {
+//      gripAndStore();
+//      turn = 0;
+//      movement->start();
+//    } else if (turn >= 4) {
+//        movement->turn(1);
+//      } else if (turn == 2 || turn == 3) {
+//          movement->turn(2);
+//      } else if (turn == 1) {
+//        //Go straight
+//      }
+
+//    while (Serial.available() >= 1) {
+//      delay(20);
+//      if ( Serial.available() >= 2) {
+//      	Serial.read();
+//	      Serial.read();
+//      }
+//    }
 }

@@ -14,6 +14,7 @@ class SRbotMovment
   void rotate();
   void stop();
   void start();
+  void freeTurn();
 
 
   private:

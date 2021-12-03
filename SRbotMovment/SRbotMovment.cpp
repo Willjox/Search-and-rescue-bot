@@ -101,3 +101,7 @@ void SRbotMovment::control(int position) {
   int rightSpeed = rightBaseSpeed + servoSpeed;
   servoOutput(leftSpeed,rightSpeed);
 }
+
+void SRbotMovment::freeTurn() {
+  servoOutput(110,120);
+}
