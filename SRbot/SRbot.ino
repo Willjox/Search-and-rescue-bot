@@ -12,13 +12,15 @@ int interruptPin;
 int i;
 const int directions[16] = {h, v, v, h,v , v, h, ht ,v,v,r,h,v,v,h,v};
 void gripAndStore() {
+  gripper->rotate(75);
+  delay(1000);
   gripper->grip();
   delay(1000);
   gripper->rotate(-160);
   delay(2000);
   gripper->grip();
   delay(2000);
-  gripper->rotate(160);
+  gripper->rotate(80);
   delay(1000);
 }
 void switchTrig () {

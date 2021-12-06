@@ -7,7 +7,7 @@
 SRbotGripper::SRbotGripper(int gripperPin, int rotatePin) {
   _rotateServo.attach(rotatePin);
   _gripperServo.attach(gripperPin);
-  _rotateServo.write(180);
+  _rotateServo.write(100);
   _gripperServo.write(160);
 }
 void SRbotGripper::moveServo(int degrees, int waitTime, Servo servo) {
