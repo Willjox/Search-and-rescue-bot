@@ -1,12 +1,16 @@
 //#include <Button.h>
-
+#define h 1
+#define v 2
+#define r 3
+#define ht 4
 #include <SRbotGripper.h>
 #include <SRbotMovment.h>
 //Button button(13);
 SRbotGripper *gripper;
 volatile SRbotMovment *movement;
 int interruptPin;
-
+int i;
+const int directions[16] = {h, v, v, h,v , v, h, ht ,v,v,r,h,v,v,h,v};
 void gripAndStore() {
   gripper->grip();
   delay(1000);
@@ -23,6 +27,7 @@ void switchTrig () {
 }
 void setup() {
   Serial.begin(9600);
+  int i = 0;
    interruptPin = 2;
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin),switchTrig, FALLING);
@@ -36,29 +41,44 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("loop");
-//  int turn = movement->followLine();
- // Serial.println(turn);
-  movement->freeTurn();
-  delay(5000);
-  
-//  if(turn == 10) {
-//      gripAndStore();
-//      turn = 0;
-//      movement->start();
-//    } else if (turn >= 4) {
-//        movement->turn(1);
-//      } else if (turn == 2 || turn == 3) {
-//          movement->turn(2);
-//      } else if (turn == 1) {
-//        //Go straight
-//      }
 
-//    while (Serial.available() >= 1) {
-//      delay(20);
-//      if ( Serial.available() >= 2) {
-//      	Serial.read();
-//	      Serial.read();
-//      }
-//    }
+  if (movement->followLine() != 10) {
+    switch (directions[i]) {
+      case v:
+        movement->turn(1);
+      case h:
+        movement->turn(2);
+      case r:
+        movement->straight();
+      case ht:
+        movement->forceTurn();
+        movement->turn(2);
+
+    }
+    i++;
+    } else {
+      gripAndStore();
+      movement->start();
+    }
+    while (Serial.available() >= 1) {
+      delay(20);
+      if ( Serial.available() >= 2) {
+      	Serial.read();
+	      Serial.read();
+      }
+    }
 }
+
+
+
+//if(turn == 10) {
+//    gripAndStore();
+//    turn = 0;
+//    movement->start();
+//  } else if (turn >= 4) {
+  //    movement->turn(1);
+  //  } else if (turn == 2 || turn == 3) {
+    //    movement->turn(2);
+  //  } else if (turn == 1) {
+  //    //Go straight
+  //  }

@@ -15,6 +15,8 @@ class SRbotMovment
   void stop();
   void start();
   void freeTurn();
+  void straight();
+  void forceTurn();
 
 
   private:
@@ -27,6 +29,7 @@ class SRbotMovment
     Servo rightServo;
 
     boolean stopped;
+    boolean forcedTurn;
 
     int lastError;
     int leftBaseSpeed;

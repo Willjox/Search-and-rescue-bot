@@ -6,6 +6,7 @@
 SRbotMovment::SRbotMovment() {
   start();
   stopped = false;
+  forcedTurn = false;
   servoOutput(90,90);
   lastError = 0;
   leftBaseSpeed = 140;
@@ -27,7 +28,12 @@ int SRbotMovment::followLine() {
     boolean deadEnd = ((!sensors->midState()) && (sensors->distance() < 15));
     boolean lineEnd = sensors->allState();
     if(!lineEnd) {
-      endOfLine();
+      if (forcedTurn) {
+        freeTurn();
+        forcedTurn == false;
+      } else {
+        endOfLine();
+      }
     }
     direction = sensors->detectTurn();
     delay(20);
@@ -103,5 +109,25 @@ void SRbotMovment::control(int position) {
 }
 
 void SRbotMovment::freeTurn() {
-  servoOutput(110,120);
+  servoOutput(97,108);
+  while(!sensors->midState() && !stopped) {
+    delay(20);
+  }
+  servoOutput(100,100);
+  delay(300);
+  servoOutput(80, 100);
+  while(!sensors->midState()) {
+    delay(20);
+  }
+}
+
+void SRbotMovment::straight() {
+  while(sensors->detectTurn() > 0) {
+    control(sensors->getLinePos());
+    delay(20);
+  }
+}
+
+void SRbotMovment::forceTurn() {
+  forcedTurn = true;
 }
