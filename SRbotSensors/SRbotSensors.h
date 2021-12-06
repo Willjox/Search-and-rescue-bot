@@ -21,6 +21,7 @@ class SRbotSensors
     int duration;
     int echoPin;
     int trigPin;
+    int turnFilter;
     QTRSensors lineFollower;
     QTRSensors turnDetectors;
 

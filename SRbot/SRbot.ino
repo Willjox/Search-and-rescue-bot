@@ -47,12 +47,16 @@ void loop() {
   if (movement->followLine() != 10) {
     switch (directions[i]) {
       case v:
+      	Serial.println("vänster");
         movement->turn(1);
       case h:
+      	Serial.println("höger");
         movement->turn(2);
       case r:
+      	Serial.println("rakt");
         movement->straight();
       case ht:
+      	Serial.println("Tvingahöger");
         movement->forceTurn();
         movement->turn(2);
 

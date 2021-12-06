@@ -12,6 +12,7 @@ SRbotSensors::SRbotSensors() {
     turnDetectors.setTypeRC();
     turnDetectors.setSensorPins(turnPins,2);
     echoPin = 11;
+    turnFilter = 0;
     trigPin = 12;
     filterLineEnd = 0;
     pinMode(echoPin,INPUT);
@@ -31,7 +32,17 @@ int SRbotSensors::detectTurn() {
   Serial.println(turnValues[1]);
   int result = (isBlack(turnValues[0]) * 4 )
               + (isBlack(turnValues[1]) * 2 );
-  return result;
+  if (result > 0) {
+	turnFilter++;
+  } else {
+	turnFilter = 0;
+  }
+  if (turnFilter >= 4) {
+	  turnFilter = 0;
+	  return result;
+  } else {
+	  return 0;
+  }
 }
 
 int SRbotSensors::distance() {
