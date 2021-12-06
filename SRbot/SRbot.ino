@@ -1,16 +1,16 @@
 //#include <Button.h>
-#define h 1
-#define v 2
-#define r 3
-#define ht 4
+#define RIGHT 1
+#define LEFT 2
+#define STRAIGHT 3
+#define FORCEDRIGHT 4
 #include <SRbotGripper.h>
 #include <SRbotMovment.h>
 //Button button(13);
 SRbotGripper *gripper;
 volatile SRbotMovment *movement;
 int interruptPin;
-int i;
-const int directions[16] = {h, v, v, h,v , v, h, ht ,v,v,r,h,v,v,h,v};
+int turnChoice;
+const int directions[16] = {RIGHT , LEFT , LEFT , RIGHT , LEFT , LEFT, RIGHT, FORCEDRIGHT ,LEFT , LEFT ,STRAIGHT , RIGHT , LEFT , RIGHT , RIGHT , LEFT};
 void gripAndStore() {
   gripper->rotate(75);
   delay(1000);
@@ -29,7 +29,7 @@ void switchTrig () {
 }
 void setup() {
   Serial.begin(9600);
-  int i = 0;
+  turnChoice = 7;
    interruptPin = 2;
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin),switchTrig, FALLING);
@@ -45,22 +45,30 @@ void setup() {
 void loop() {
 
   if (movement->followLine() != 10) {
-    switch (directions[i]) {
-      case v:
+    switch (directions[turnChoice]) {
+      case LEFT:
       	Serial.println("vänster");
         movement->turn(1);
-      case h:
+	break;
+      case RIGHT:
       	Serial.println("höger");
         movement->turn(2);
-      case r:
+	break;
+      case STRAIGHT:
       	Serial.println("rakt");
         movement->straight();
-      case ht:
+	break;
+      case FORCEDRIGHT:
       	Serial.println("Tvingahöger");
         movement->forceTurn();
         movement->turn(2);
+	break;
     }
-    i++;
+    Serial.println("incremeanting");
+    turnChoice++;
+    if (turnChoice == 14) {
+    	turnChoice = 6;
+    }
     } else {
       gripAndStore();
       movement->start();
