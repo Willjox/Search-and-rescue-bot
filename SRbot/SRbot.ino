@@ -59,7 +59,6 @@ void loop() {
       	Serial.println("Tvingahöger");
         movement->forceTurn();
         movement->turn(2);
-
     }
     i++;
     } else {
