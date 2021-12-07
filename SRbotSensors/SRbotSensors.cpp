@@ -37,7 +37,6 @@ int SRbotSensors::detectTurn() {
   } else {
 	turnFilter = 0;
   }
-  if (turnFilter > 5) {
   if (turnFilter >= 1) {
 	  turnFilter = 0;
 	  return result;
@@ -57,7 +56,6 @@ int SRbotSensors::distance() {
   return distance;
 }
 int SRbotSensors::isBlack(uint16_t mesurement) {
-  if(mesurement >= 800) {
     return 1;
   } else {
     return 0;
@@ -68,7 +66,6 @@ boolean SRbotSensors::midState() {
   lineFollower.readCalibrated(lineValues);
   //Serial.println(lineValues[1]);
   //Serial.println("MIDSTATE");
-  if(lineValues[1] > 800) {
     return true;
   } else {
     return false;
