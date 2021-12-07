@@ -11,28 +11,29 @@ SRbotGripper *gripper;
 volatile SRbotMovment *movement;
 int interruptPin;
 int turnChoice;
-const int directions[16] = {RIGHT , LEFT , LEFT , RIGHT , LEFT , LEFT, RIGHT, FORCEDRIGHT ,LEFT , LEFT ,STRAIGHT , RIGHT , LEFT , RIGHT , RIGHT , LEFT,
+int passengers;
+const int directions[54] = {RIGHT , LEFT , LEFT , RIGHT , LEFT , LEFT, RIGHT, FORCEDRIGHT ,LEFT , LEFT ,STRAIGHT , RIGHT , LEFT , RIGHT , RIGHT , LEFT,
                               RIGHT, RIGHT , LEFT , LEFT , STRAIGHT , RIGHT , RIGHT , LEFT , LEFT , LEFT , LEFT ,RIGHT ,LEFT , LEFT , RIGHT , RIGHT , LEFT, FORCEDRIGHT , LEFT , RIGHT , RIGHT , LEFT , LEFT , LEFT , RIGHT , LEFT , LEFT , RIGHT , RIGHT , LEFT , FORCEDSTRAIGHT, RIGHT , LEFT , LEFT , LEFT , RIGHT , LEFT};
 void gripAndStore() {
-  if(passanger == 2) {
+  if(passengers == 2) {
     return;
   }
   gripper->rotate(75);
   delay(1000);
   gripper->grip();
   delay(1000);
-  if ( passanger = 0) {
+  if ( passengers = 0) {
     gripper->rotate(-160);
     delay(2000);
     gripper->grip();
     delay(2000);
     gripper->rotate(80);
     delay(1000);
-  } else if (passanger = 1) {
+  } else if (passengers = 1) {
     gripper->rotate(-75);
     delay(1000);
   }
-  passanger++;
+  passengers++;
 }
 void switchTrig () {
     movement->stop();
@@ -75,7 +76,7 @@ void loop() {
         movement->turn(2);
 	break;
       case FORCEDSTRAIGHT:
-        serial.println("tvigna framåt");
+        Serial.println("tvigna framåt");
         movement->forceTurn();
         movement->straight();
   break;
