@@ -24,5 +24,7 @@ void SRbotGripper::grip() {
   }
 }
 void SRbotGripper::rotate(int degrees) {
+  _rotateServo.attach(rotatePin);
   moveServo(degrees,10,_rotateServo);
+  _rotateServo.detach(rotatePin);
 }

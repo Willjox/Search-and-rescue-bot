@@ -78,18 +78,16 @@ boolean SRbotSensors::allState() {
   lineFollower.readCalibrated(lineValues);
   for (int i = 0; i < 3; i++) {
     //Serial.println(lineValues[i]);
-    if(lineValues[i] > 500) {
+    if(lineValues[i] > 800) {
     filterLineEnd = 0;
     return true;
     }
   }
-  if (filterLineEnd > 7) {
-      filterLineEnd = 0;
+  if (filterLineEnd > 5) {
       return false;
   }
   filterLineEnd++;
   return true;
-
 }
 
 void SRbotSensors::loadCalibration() {

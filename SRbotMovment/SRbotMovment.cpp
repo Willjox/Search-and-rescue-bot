@@ -112,14 +112,8 @@ void SRbotMovment::control(int position) {
 }
 
 void SRbotMovment::freeTurn() {
-  servoOutput(96,113);
-  while(!sensors->midState() && !stopped) {
-    delay(20);
-  }
-  servoOutput(100,100);
-  delay(300);
-  servoOutput(80, 100);
-  while(!sensors->midState()) {
+  servoOutput(97,108);
+  while(!sensors->allState() && !stopped) {
     delay(20);
   }
 }
