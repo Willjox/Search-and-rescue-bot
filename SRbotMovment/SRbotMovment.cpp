@@ -9,7 +9,7 @@ SRbotMovment::SRbotMovment() {
   forcedTurn = false;
   servoOutput(90,90);
   lastError = 0;
-  leftBaseSpeed = 108;
+  leftBaseSpeed = 100;
   rightBaseSpeed = 110;
 
   sensors = new SRbotSensors();
@@ -112,7 +112,7 @@ void SRbotMovment::control(int position) {
 }
 
 void SRbotMovment::freeTurn() {
-  servoOutput(97,108);
+  servoOutput(95,100);
   while(!sensors->allState() && !stopped) {
     delay(20);
   }

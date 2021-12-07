@@ -22,14 +22,14 @@ void gripAndStore() {
   delay(1000);
   gripper->grip();
   delay(1000);
-  if ( passengers = 0) {
+  if ( passengers == 0) {
     gripper->rotate(-160);
     delay(2000);
     gripper->grip();
     delay(2000);
     gripper->rotate(80);
     delay(1000);
-  } else if (passengers = 1) {
+  } else if (passengers == 1) {
     gripper->rotate(-75);
     delay(1000);
   }

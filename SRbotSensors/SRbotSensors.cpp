@@ -37,7 +37,7 @@ int SRbotSensors::detectTurn() {
   } else {
 	turnFilter = 0;
   }
-  if (turnFilter >= 3) {
+  if (turnFilter > 5) {
 	  turnFilter = 0;
 	  return result;
   } else {
@@ -83,11 +83,11 @@ boolean SRbotSensors::allState() {
     return true;
     }
   }
-  if (filterLineEnd > 5) {
+  if (filterLineEnd >= 3) {
       return false;
   }
   filterLineEnd++;
-  return true;
+  return false;
 }
 
 void SRbotSensors::loadCalibration() {
