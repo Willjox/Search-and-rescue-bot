@@ -4,13 +4,13 @@
 #include "SRbotSensors.h"
 
 SRbotMovment::SRbotMovment() {
-  start();
-  stopped = false;
-  forcedTurn = false;
-  servoOutput(90,90);
-  lastError = 0;
-  leftBaseSpeed = 100;
-  rightBaseSpeed = 110;
+    start();
+    stopped = false;
+    forcedTurn = false;
+    servoOutput(90,90);
+    lastError = 0;
+    leftBaseSpeed = 100;
+    rightBaseSpeed = 107;
 
   sensors = new SRbotSensors();
 
@@ -97,6 +97,8 @@ void SRbotMovment::rotate() {
 }
 
 void SRbotMovment::servoOutput(int leftSpeed, int rightSpeed) {
+  Serial.println(leftSpeed);
+  Serial.println(rightSpeed);
   leftServo.write(leftSpeed);
   rightServo.write(180-rightSpeed);
 }
@@ -112,7 +114,14 @@ void SRbotMovment::control(int position) {
 }
 
 void SRbotMovment::freeTurn() {
-  servoOutput(95,100);
+  stop();
+  delay(500);
+  start();
+  servoOutput(100,80);
+  delay(500);
+  servoOutput(110,95);
+  delay(600);
+  servoOutput(97,110);
   while(!sensors->allState() && !stopped) {
     delay(20);
   }

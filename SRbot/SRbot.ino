@@ -12,7 +12,7 @@ volatile SRbotMovment *movement;
 int interruptPin;
 int turnChoice;
 int passengers;
-const int directions[54] = {RIGHT , LEFT , LEFT , RIGHT , LEFT , LEFT, RIGHT, FORCEDRIGHT ,LEFT , LEFT ,STRAIGHT , RIGHT , LEFT , RIGHT , RIGHT , LEFT,
+const int directions[54] = {RIGHT , LEFT , LEFT , RIGHT , LEFT , LEFT, RIGHT, FORCEDRIGHT ,LEFT , LEFT ,STRAIGHT , RIGHT , LEFT , LEFT , RIGHT , LEFT,
                               RIGHT, RIGHT , LEFT , LEFT , STRAIGHT , RIGHT , RIGHT , LEFT , LEFT , LEFT , LEFT ,RIGHT ,LEFT , LEFT , RIGHT , RIGHT , LEFT, FORCEDRIGHT , LEFT , RIGHT , RIGHT , LEFT , LEFT , LEFT , RIGHT , LEFT , LEFT , RIGHT , RIGHT , LEFT , FORCEDSTRAIGHT, RIGHT , LEFT , LEFT , LEFT , RIGHT , LEFT};
 void gripAndStore() {
   if(passengers == 2) {
@@ -41,15 +41,16 @@ void switchTrig () {
 }
 void setup() {
   Serial.begin(9600);
-  turnChoice = 7;
+  turnChoice = 0 ;
    interruptPin = 2;
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin),switchTrig, FALLING);
   Serial.println("waiting for serial....");
-  while (Serial.available() == 0) {
-    delay(20);
-  }
-  Serial.read();
+//  while (Serial.available() == 0) {
+//    delay(20);
+//  }
+//  Serial.read();
+  delay(5000);
   gripper = new SRbotGripper(A0,A1);
   movement = new SRbotMovment();
 }
@@ -83,20 +84,20 @@ void loop() {
     }
     Serial.println("incremeanting");
     turnChoice++;
-    if (turnChoice == 14) {
-    	turnChoice = 6;
-    }
+//    if (turnChoice == 14) {
+//    	turnChoice = 6;
+//    }
     } else {
       gripAndStore();
       movement->start();
     }
-    while (Serial.available() >= 1) {
-      delay(20);
-      if ( Serial.available() >= 2) {
-      	Serial.read();
-	      Serial.read();
-      }
-    }
+//    while (Serial.available() >= 1) {
+//      delay(20);
+//      if ( Serial.available() >= 2) {
+//      	Serial.read();
+//	      Serial.read();
+//      }
+//    }
 }
 
 
