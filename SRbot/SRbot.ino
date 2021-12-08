@@ -21,12 +21,12 @@ void gripAndStore() {
   gripper->rotate(75);
   delay(1000);
   gripper->grip();
-  delay(1000);
+  delay(700);
   if ( passengers == 0) {
     gripper->rotate(-160);
-    delay(2000);
+    delay(1000);
     gripper->grip();
-    delay(2000);
+    delay(1000);
     gripper->rotate(80);
     delay(1000);
   } else if (passengers == 1) {
@@ -34,14 +34,16 @@ void gripAndStore() {
     delay(1000);
   }
   passengers++;
+  //attachInterrupt(digitalPinToInterrupt(interruptPin),switchTrig, FALLING);
 }
 void switchTrig () {
-    movement->stop();
-    Serial.println("yo ima interupting");
+  //detachInterrupt(digitalPinToInterrupt(interruptPin));
+  movement->stop();
+  Serial.println("yo ima interupting");
 }
 void setup() {
   Serial.begin(9600);
-  turnChoice = 0 ;
+  turnChoice = 32 ;
    interruptPin = 2;
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin),switchTrig, FALLING);

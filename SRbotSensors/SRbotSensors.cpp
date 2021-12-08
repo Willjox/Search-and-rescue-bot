@@ -11,6 +11,8 @@ SRbotSensors::SRbotSensors() {
     lineFollower.setSensorPins(linePins,3);
     turnDetectors.setTypeRC();
     turnDetectors.setSensorPins(turnPins,2);
+    turnDetectors.setDimmingLevel(1);
+    lineFollower.setDimmingLevel(1);
     echoPin = 11;
     turnFilter = 0;
     trigPin = 12;
@@ -56,6 +58,7 @@ int SRbotSensors::distance() {
   return distance;
 }
 int SRbotSensors::isBlack(uint16_t mesurement) {
+  if(mesurement >= 800) {
     return 1;
   } else {
     return 0;
@@ -66,6 +69,7 @@ boolean SRbotSensors::midState() {
   lineFollower.readCalibrated(lineValues);
   //Serial.println(lineValues[1]);
   //Serial.println("MIDSTATE");
+  if(lineValues[1] > 800) {
     return true;
   } else {
     return false;
@@ -87,12 +91,10 @@ Serial.println(filterLineEnd);
     return true;
     }
   }
-  if (filterLineEnd >= 3) {
   if (filterLineEnd > 4) {
       return false;
   }
   filterLineEnd++;
-  return false;
   return true;
 }
 

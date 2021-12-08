@@ -9,10 +9,10 @@ SRbotMovment::SRbotMovment() {
     forcedTurn = false;
     servoOutput(90,90);
     lastError = 0;
-    leftBaseSpeed = 100;
-    rightBaseSpeed = 107;
+    leftBaseSpeed = 105;
+    rightBaseSpeed = 105;
+    sensors = new SRbotSensors();
 
-  sensors = new SRbotSensors();
 
 
 
@@ -24,8 +24,7 @@ int SRbotMovment::followLine() {
     if(stopped) {
       return 10;
     }
-    control(sensors->getLinePos());
-    boolean deadEnd = ((!sensors->midState()) && (sensors->distance() < 15));
+    //boolean deadEnd = ((!sensors->midState()) && (sensors->distance() < 15));
     boolean lineEnd = sensors->allState();
     if(!lineEnd) {
       if (forcedTurn) {
@@ -35,8 +34,9 @@ int SRbotMovment::followLine() {
         endOfLine();
       }
     }
+    control(sensors->getLinePos());
     direction = sensors->detectTurn();
-    delay(20);
+    delay(10);
   }
   return direction;
 }
@@ -55,23 +55,23 @@ void SRbotMovment::turn(int direction) {
     if (direction == 1) {
         Serial.println("Turning left");
         servoOutput(90,90);
-        servoOutput(120,120);
+        servoOutput(leftBaseSpeed,rightBaseSpeed);
         delay(500);
-        servoOutput(120,75);
+        servoOutput(105,75);
         delay(500);
         while(!sensors->midState() && !stopped) {
-        delay(20);
+        delay(10);
       //  Serial.println("turn loop");
         }
       } else if (direction == 2) {
           Serial.println("Turning Right");
           servoOutput(90,90);
-          servoOutput(120,120);
+          servoOutput(leftBaseSpeed,rightBaseSpeed);
           delay(500);
-          servoOutput(75,120);
+          servoOutput(75,105);
           delay(500);
           while(!sensors->midState() && !stopped) {
-            delay(20);
+            delay(10);
           //  Serial.println("turn loop");
         }
     }
