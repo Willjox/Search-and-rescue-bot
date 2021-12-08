@@ -27,11 +27,11 @@ int SRbotSensors::getLinePos() {
 }
 
 int SRbotSensors::detectTurn() {
-  //Serial.print("i detectTurn: ");
+  Serial.print("i detectTurn: ");
   turnDetectors.readCalibrated(turnValues);
-  //Serial.print(turnValues[0]);
-  //Serial.print(" ");
-  //Serial.println(turnValues[1]);
+  Serial.print(turnValues[0]);
+  Serial.print(" ");
+  Serial.println(turnValues[1]);
   int result = (isBlack(turnValues[0]) * 4 )
               + (isBlack(turnValues[1]) * 2 );
   if (result > 0) {

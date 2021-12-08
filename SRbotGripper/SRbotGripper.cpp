@@ -17,10 +17,10 @@ void SRbotGripper::moveServo(int degrees, int waitTime, Servo servo) {
 void SRbotGripper::grip() {
   //if closed open
   if (_gripperServo.read() == 160) {
-    moveServo(-30,10,_gripperServo);
+    moveServo(-50,10,_gripperServo);
   } else {
     // if not closed the gripper is open and should be closed
-    moveServo(30,10,_gripperServo);
+    moveServo(50,10,_gripperServo);
   }
 }
 void SRbotGripper::rotate(int degrees) {

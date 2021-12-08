@@ -33,6 +33,8 @@ void gripAndStore() {
     gripper->rotate(-75);
     delay(1000);
   }
+  Serial.println(passengers);
+  delay(1000);
   passengers++;
   //attachInterrupt(digitalPinToInterrupt(interruptPin),switchTrig, FALLING);
 }
@@ -43,7 +45,7 @@ void switchTrig () {
 }
 void setup() {
   Serial.begin(9600);
-  turnChoice = 32 ;
+  turnChoice = 0 ;
    interruptPin = 2;
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin),switchTrig, FALLING);
