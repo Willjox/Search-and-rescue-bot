@@ -18,19 +18,19 @@ void gripAndStore() {
   if(passengers == 2) {
     return;
   }
-  gripper->rotate(75);
+  gripper->rotate(80);
   delay(1000);
   gripper->grip();
   delay(700);
   if ( passengers == 0) {
-    gripper->rotate(-160);
+    gripper->rotate(-165);
     delay(1000);
     gripper->grip();
     delay(1000);
     gripper->rotate(80);
     delay(1000);
   } else if (passengers == 1) {
-    gripper->rotate(-75);
+    gripper->rotate(-80);
     delay(1000);
   }
   Serial.println(passengers);

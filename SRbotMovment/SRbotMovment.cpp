@@ -22,6 +22,7 @@ int SRbotMovment::followLine() {
  int direction = 0;
  while ( direction == 0) {
     if(stopped) {
+      Serial.println("gripklo engage!");
       return 10;
     }
     //boolean deadEnd = ((!sensors->midState()) && (sensors->distance() < 15));
@@ -56,7 +57,7 @@ void SRbotMovment::turn(int direction) {
         Serial.println("Turning left");
         servoOutput(90,90);
         servoOutput(leftBaseSpeed,rightBaseSpeed);
-        delay(500);
+        delay(350);
         servoOutput(120,60);
         delay(500);
         while(!sensors->midState() && !stopped) {
@@ -67,7 +68,7 @@ void SRbotMovment::turn(int direction) {
           Serial.println("Turning Right");
           servoOutput(90,90);
           servoOutput(leftBaseSpeed,rightBaseSpeed);
-          delay(500);
+          delay(350);
           servoOutput(60,120);
           delay(500);
           while(!sensors->midState() && !stopped) {
