@@ -39,7 +39,7 @@ int SRbotSensors::detectTurn() {
   } else {
 	turnFilter = 0;
   }
-  if (turnFilter >= 5) {
+  if (turnFilter > 2) {
 	  turnFilter = 0;
 	  return result;
   } else {

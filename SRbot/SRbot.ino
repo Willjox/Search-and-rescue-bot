@@ -19,19 +19,19 @@ void gripAndStore() {
     return;
   }
   gripper->rotate(80);
-  delay(1000);
+  delay(800);
   gripper->grip();
   delay(700);
   if ( passengers == 0) {
     gripper->rotate(-165);
-    delay(1000);
+    delay(800);
     gripper->grip();
     delay(1000);
-    gripper->rotate(80);
-    delay(1000);
+    gripper->rotate(85);
+    delay(800);
   } else if (passengers == 1) {
     gripper->rotate(-80);
-    delay(1000);
+    delay(800);
   }
   Serial.println(passengers);
   delay(1000);
@@ -45,7 +45,7 @@ void switchTrig () {
 }
 void setup() {
   Serial.begin(9600);
-  turnChoice = 0 ;
+  turnChoice = 29 ;
    interruptPin = 2;
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin),switchTrig, FALLING);
@@ -94,7 +94,13 @@ void loop() {
       delay(5000);
       movement->start();
     } else if (turnChoice >= 54) {
-      movement->stop();
+      while(1) {
+        movement->stop();
+        delay(1000);
+        movement->rotate();
+        delay(2000);
+        
+      }
     }
     } else {
       gripAndStore();

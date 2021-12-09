@@ -2,6 +2,7 @@
 #include "SRbotMovment.h"
 #include "Servo.h"
 #include "SRbotSensors.h"
+#define loopTime 30
 
 SRbotMovment::SRbotMovment() {
     start();
@@ -38,7 +39,7 @@ int SRbotMovment::followLine() {
     }
     control(sensors->getLinePos());
     direction = sensors->detectTurn();
-    delay(10);
+    delay(loopTime);
   }
   return direction;
 }
@@ -59,7 +60,7 @@ void SRbotMovment::turn(int direction) {
         servoOutput(90,90);
         servoOutput(leftBaseSpeed,rightBaseSpeed);
         delay(575);
-        servoOutput(120,60);
+        servoOutput(leftBaseSpeed,180-rightBaseSpeed);
         delay(500);
         while(!sensors->midState() && !stopped) {
         delay(10);
@@ -70,7 +71,7 @@ void SRbotMovment::turn(int direction) {
           servoOutput(90,90);
           servoOutput(leftBaseSpeed,rightBaseSpeed);
           delay(575);
-          servoOutput(60,120);
+          servoOutput(180-leftBaseSpeed,rightBaseSpeed);
           delay(500);
           while(!sensors->midState() && !stopped) {
             delay(10);
@@ -95,7 +96,7 @@ void SRbotMovment::start() {
 }
 
 void SRbotMovment::rotate() {
-  servoOutput(65, 115);
+  servoOutput(180 - leftBaseSpeed,rightBaseSpeed);
 }
 
 void SRbotMovment::servoOutput(int leftSpeed, int rightSpeed) {
@@ -107,7 +108,7 @@ void SRbotMovment::servoOutput(int leftSpeed, int rightSpeed) {
 void SRbotMovment::control(int position) {
   //Serial.println("i control");
   int error = position - 1000;
-  integrator = integrator + error;
+  integrator = constrain(integrator + error,-30000,30000);
   int servoSpeed = kp * error + kd * (error - lastError) + (integrator * ki) ;
   lastError = error;
   int leftSpeed = leftBaseSpeed - servoSpeed;
@@ -116,13 +117,10 @@ void SRbotMovment::control(int position) {
 }
 
 void SRbotMovment::freeTurn() {
-  stop();
-  delay(500);
-  start();
-  servoOutput(100,80);
-  delay(250);
+  //servoOutput(115,65);
+  //delay(200);
   servoOutput(115,114);
-  delay(800);
+  delay(500);
   servoOutput(98,111);
   while(!sensors->allState() && !stopped) {
     delay(10);
