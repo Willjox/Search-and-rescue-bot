@@ -27,11 +27,11 @@ int SRbotSensors::getLinePos() {
 }
 
 int SRbotSensors::detectTurn() {
-  Serial.print("i detectTurn: ");
+  //Serial.print("i detectTurn: ");
   turnDetectors.readCalibrated(turnValues);
-  Serial.print(turnValues[0]);
-  Serial.print(" ");
-  Serial.println(turnValues[1]);
+  //Serial.print(turnValues[0]);
+  //Serial.print(" ");
+  //Serial.println(turnValues[1]);
   int result = (isBlack(turnValues[0]) * 4 )
               + (isBlack(turnValues[1]) * 2 );
   if (result > 0) {
@@ -39,7 +39,7 @@ int SRbotSensors::detectTurn() {
   } else {
 	turnFilter = 0;
   }
-  if (turnFilter >= 1) {
+  if (turnFilter >= 2) {
 	  turnFilter = 0;
 	  return result;
   } else {
@@ -58,7 +58,7 @@ int SRbotSensors::distance() {
   return distance;
 }
 int SRbotSensors::isBlack(uint16_t mesurement) {
-  if(mesurement >= 800) {
+  if(mesurement >= 500) {
     return 1;
   } else {
     return 0;
@@ -69,7 +69,7 @@ boolean SRbotSensors::midState() {
   lineFollower.readCalibrated(lineValues);
   //Serial.println(lineValues[1]);
   //Serial.println("MIDSTATE");
-  if(lineValues[1] > 800) {
+  if(lineValues[1] > 450) {
     return true;
   } else {
     return false;
@@ -78,20 +78,20 @@ boolean SRbotSensors::midState() {
 
 boolean SRbotSensors::allState() {
   lineFollower.readCalibrated(lineValues);
-  for (int i = 0; i < 3; i++) {
+  //for (int i = 0; i < 3; i++) {
     //Serial.println(lineValues[i]);
-  Serial.print(lineValues[i]);
-  Serial.print(" ");
-  }
-Serial.print(". ");
-Serial.println(filterLineEnd);
+  //Serial.print(lineValues[i]);
+  //Serial.print(" ");
+  //}
+//Serial.print(". ");
+//Serial.println(filterLineEnd);
   for (int i = 0; i < 3; i++) {
-    if(lineValues[i] > 400) {
+    if(lineValues[i] > 450) {
     filterLineEnd = 0;
     return true;
     }
   }
-  if (filterLineEnd > 4) {
+  if (filterLineEnd > 6) {
       return false;
   }
   filterLineEnd++;
