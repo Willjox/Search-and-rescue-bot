@@ -39,7 +39,7 @@ int SRbotSensors::detectTurn() {
   } else {
 	turnFilter = 0;
   }
-  if (turnFilter >= 2) {
+  if (turnFilter >= 5) {
 	  turnFilter = 0;
 	  return result;
   } else {
@@ -69,7 +69,7 @@ boolean SRbotSensors::midState() {
   lineFollower.readCalibrated(lineValues);
   //Serial.println(lineValues[1]);
   //Serial.println("MIDSTATE");
-  if(lineValues[1] > 450) {
+  if(lineValues[1] > 500) {
     return true;
   } else {
     return false;
@@ -86,12 +86,12 @@ boolean SRbotSensors::allState() {
 //Serial.print(". ");
 //Serial.println(filterLineEnd);
   for (int i = 0; i < 3; i++) {
-    if(lineValues[i] > 450) {
+    if(lineValues[i] > 500) {
     filterLineEnd = 0;
     return true;
     }
   }
-  if (filterLineEnd > 6) {
+  if (filterLineEnd > 10) {
       return false;
   }
   filterLineEnd++;

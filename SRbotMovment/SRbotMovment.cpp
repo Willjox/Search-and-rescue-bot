@@ -9,8 +9,9 @@ SRbotMovment::SRbotMovment() {
     forcedTurn = false;
     servoOutput(90,90);
     lastError = 0;
-    leftBaseSpeed = 118;
-    rightBaseSpeed = 121;
+    integrator = 0;
+    leftBaseSpeed = 115;
+    rightBaseSpeed = 115;
     sensors = new SRbotSensors();
 
 
@@ -57,7 +58,7 @@ void SRbotMovment::turn(int direction) {
         Serial.println("Turning left");
         servoOutput(90,90);
         servoOutput(leftBaseSpeed,rightBaseSpeed);
-        delay(475);
+        delay(575);
         servoOutput(120,60);
         delay(500);
         while(!sensors->midState() && !stopped) {
@@ -68,7 +69,7 @@ void SRbotMovment::turn(int direction) {
           Serial.println("Turning Right");
           servoOutput(90,90);
           servoOutput(leftBaseSpeed,rightBaseSpeed);
-          delay(475);
+          delay(575);
           servoOutput(60,120);
           delay(500);
           while(!sensors->midState() && !stopped) {
@@ -94,7 +95,7 @@ void SRbotMovment::start() {
 }
 
 void SRbotMovment::rotate() {
-  servoOutput(65,115);
+  servoOutput(65, 115);
 }
 
 void SRbotMovment::servoOutput(int leftSpeed, int rightSpeed) {
@@ -106,7 +107,8 @@ void SRbotMovment::servoOutput(int leftSpeed, int rightSpeed) {
 void SRbotMovment::control(int position) {
   //Serial.println("i control");
   int error = position - 1000;
-  int servoSpeed = kp * error + kd * (error - lastError);
+  integrator = integrator + error;
+  int servoSpeed = kp * error + kd * (error - lastError) + (integrator * ki) ;
   lastError = error;
   int leftSpeed = leftBaseSpeed - servoSpeed;
   int rightSpeed = rightBaseSpeed + servoSpeed;
@@ -119,7 +121,7 @@ void SRbotMovment::freeTurn() {
   start();
   servoOutput(100,80);
   delay(250);
-  servoOutput(110,108);
+  servoOutput(115,114);
   delay(800);
   servoOutput(98,111);
   while(!sensors->allState() && !stopped) {
