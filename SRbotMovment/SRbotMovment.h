@@ -21,9 +21,9 @@ class SRbotMovment
 
   private:
     const int servoPins[2] = {9,10};
-    const float kp = 0.01;
-    const float kd = 0.01;
-    const float ki = 0.00015;
+    const float kp = 0.009;
+    const float kd = 0.002;
+    const float ki = 0.00025;
 
     SRbotSensors *sensors;
     Servo leftServo;

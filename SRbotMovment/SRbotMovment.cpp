@@ -2,7 +2,7 @@
 #include "SRbotMovment.h"
 #include "Servo.h"
 #include "SRbotSensors.h"
-#define loopTime 30
+#define loopTime 15
 
 SRbotMovment::SRbotMovment() {
     start();
@@ -41,6 +41,7 @@ int SRbotMovment::followLine() {
     direction = sensors->detectTurn();
     delay(loopTime);
   }
+  integrator = 0;
   return direction;
 }
 
@@ -59,8 +60,8 @@ void SRbotMovment::turn(int direction) {
         Serial.println("Turning left");
         servoOutput(90,90);
         servoOutput(leftBaseSpeed,rightBaseSpeed);
-        delay(575);
-        servoOutput(leftBaseSpeed,180-rightBaseSpeed);
+        delay(525);
+        servoOutput(leftBaseSpeed - 4,180-rightBaseSpeed + 4);
         delay(500);
         while(!sensors->midState() && !stopped) {
         delay(10);
@@ -70,8 +71,8 @@ void SRbotMovment::turn(int direction) {
           Serial.println("Turning Right");
           servoOutput(90,90);
           servoOutput(leftBaseSpeed,rightBaseSpeed);
-          delay(575);
-          servoOutput(180-leftBaseSpeed,rightBaseSpeed);
+          delay(535);
+          servoOutput(180-leftBaseSpeed + 4,rightBaseSpeed - 4);
           delay(500);
           while(!sensors->midState() && !stopped) {
             delay(10);
@@ -96,7 +97,7 @@ void SRbotMovment::start() {
 }
 
 void SRbotMovment::rotate() {
-  servoOutput(180 - leftBaseSpeed,rightBaseSpeed);
+  servoOutput(180 - leftBaseSpeed + 4,rightBaseSpeed - 4);
 }
 
 void SRbotMovment::servoOutput(int leftSpeed, int rightSpeed) {
@@ -108,7 +109,7 @@ void SRbotMovment::servoOutput(int leftSpeed, int rightSpeed) {
 void SRbotMovment::control(int position) {
   //Serial.println("i control");
   int error = position - 1000;
-  integrator = constrain(integrator + error,-30000,30000);
+  integrator = constrain(integrator + error,-10000,10000);
   int servoSpeed = kp * error + kd * (error - lastError) + (integrator * ki) ;
   lastError = error;
   int leftSpeed = leftBaseSpeed - servoSpeed;
@@ -120,8 +121,8 @@ void SRbotMovment::freeTurn() {
   //servoOutput(115,65);
   //delay(200);
   servoOutput(115,114);
-  delay(500);
-  servoOutput(98,111);
+  delay(450);
+  servoOutput(100,115);
   while(!sensors->allState() && !stopped) {
     delay(10);
   }
