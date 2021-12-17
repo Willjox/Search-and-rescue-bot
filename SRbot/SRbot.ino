@@ -89,14 +89,16 @@ void loop() {
     Serial.println("incremeanting");
     turnChoice++;
     if (turnChoice == 16) {
-    	movement->stop();
-      if (passengers == 2) {
+    	movement->followLineToEndOfLine();
+      movement->stop();
+;      if (passengers == 2) {
         gripper->grip();
       }
       passengers = 0;
-      delay(3000);
+      delay(2000);
       movement->start();
-    } else if (turnChoice >= 54) {
+    } else if (turnChoice >= 53) {
+      movement->followLineToEndOfLine();
       movement->stop();
       gripper->rotate(75);
       delay(400);
@@ -115,7 +117,7 @@ void loop() {
         movement->start();
         movement->rotate();
         delay(2000);
-        
+
       }
     }
     } else {

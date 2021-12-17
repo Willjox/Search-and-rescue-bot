@@ -17,13 +17,13 @@ class SRbotMovment
   void freeTurn();
   void straight();
   void forceTurn();
-
+  int followLineToEndOfLine();
 
   private:
     const int servoPins[2] = {9,10};
-    const float kp = 0.009;
-    const float kd = 0.002;
-    const float ki = 0.00025;
+    const float kp = 0.008;
+    const float kd = 0.001;
+    const float ki = 0.0003;
 
     SRbotSensors *sensors;
     Servo leftServo;

@@ -41,9 +41,22 @@ int SRbotMovment::followLine() {
     direction = sensors->detectTurn();
     delay(loopTime);
   }
-  integrator = 0;
+  //integrator = 0;
   return direction;
 }
+int SRbotMovment::followLineToEndOfLine() {
+ int direction = 0;
+ while ( direction == 0) {
+    //boolean deadEnd = ((!sensors->midState()) && (sensors->distance() < 15));
+    boolean lineEnd = sensors->allState();
+    if(!lineEnd) {
+      return 0;
+    }
+    control(sensors->getLinePos());
+    delay(loopTime);
+  }
+}
+
 
 void SRbotMovment::endOfLine() {
   servoOutput(90,90);
@@ -121,7 +134,7 @@ void SRbotMovment::freeTurn() {
   //servoOutput(115,65);
   //delay(200);
   servoOutput(115,114);
-  delay(450);
+  delay(465);
   servoOutput(100,115);
   while(!sensors->allState() && !stopped) {
     delay(10);
